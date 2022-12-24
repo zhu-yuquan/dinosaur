@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.PerNovelMapper">
+    
+    <resultMap type="PerNovel" id="PerNovelResult">
+        <result property="novelId"    column="novel_id"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="bookAuthor"    column="book_author"    />
+        <result property="bookCode"    column="book_code"    />
+        <result property="bookStatus"    column="book_status"    />
+        <result property="bookImage"    column="book_image"    />
+        <result property="cateType"    column="cate_type"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="bookIntro"    column="book_intro"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPerNovelVo">
+        select novel_id, book_name, book_author, book_code, book_status, book_image, cate_type, cate_name, book_intro, del_flag, create_by, create_time, update_by, update_time from per_novel
+    </sql>
+
+    <select id="selectPerNovelList" parameterType="PerNovel" resultMap="PerNovelResult">
+        <include refid="selectPerNovelVo"/>
+        <where>  
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="bookAuthor != null  and bookAuthor != ''"> and book_author = #{bookAuthor}</if>
+            <if test="bookCode != null  and bookCode != ''"> and book_code like concat('%', #{bookCode}, '%')</if>
+            <if test="cateType != null  and cateType != ''"> and cate_type = #{cateType}</if>
+            <if test="cateName != null  and cateName != ''"> and cate_name like concat('%', #{cateName}, '%')</if>
+            <if test="bookIntro != null  and bookIntro != ''"> and book_intro = #{bookIntro}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerNovelById" parameterType="String" resultMap="PerNovelResult">
+        <include refid="selectPerNovelVo"/>
+        where novel_id = #{novelId}
+    </select>
+        
+    <insert id="insertPerNovel" parameterType="PerNovel" useGeneratedKeys="true" keyProperty="novelId">
+        <selectKey keyProperty="novelId" resultType="java.lang.String" order="BEFORE">
+          select replace(uuid(), '-', '') fROM dual
+        </selectKey>
+        insert into per_novel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="novelId != null">novel_id,</if>
+            <if test="bookName != null">book_name,</if>
+            <if test="bookAuthor != null">book_author,</if>
+            <if test="bookCode != null">book_code,</if>
+            <if test="bookStatus != null">book_status,</if>
+            <if test="bookImage != null">book_image,</if>
+            <if test="cateType != null">cate_type,</if>
+            <if test="cateName != null">cate_name,</if>
+            <if test="bookIntro != null">book_intro,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="novelId != null">#{novelId},</if>
+            <if test="bookName != null">#{bookName},</if>
+            <if test="bookAuthor != null">#{bookAuthor},</if>
+            <if test="bookCode != null">#{bookCode},</if>
+            <if test="bookStatus != null">#{bookStatus},</if>
+            <if test="bookImage != null">#{bookImage},</if>
+            <if test="cateType != null">#{cateType},</if>
+            <if test="cateName != null">#{cateName},</if>
+            <if test="bookIntro != null">#{bookIntro},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerNovel" parameterType="PerNovel">
+        update per_novel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookName != null">book_name = #{bookName},</if>
+            <if test="bookAuthor != null">book_author = #{bookAuthor},</if>
+            <if test="bookCode != null">book_code = #{bookCode},</if>
+            <if test="bookStatus != null">book_status = #{bookStatus},</if>
+            <if test="bookImage != null">book_image = #{bookImage},</if>
+            <if test="cateType != null">cate_type = #{cateType},</if>
+            <if test="cateName != null">cate_name = #{cateName},</if>
+            <if test="bookIntro != null">book_intro = #{bookIntro},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where novel_id = #{novelId}
+    </update>
+
+    <delete id="deletePerNovelById" parameterType="String">
+        delete from per_novel where novel_id = #{novelId}
+    </delete>
+
+    <delete id="deletePerNovelByIds" parameterType="String">
+        delete from per_novel where novel_id in 
+        <foreach item="novelId" collection="array" open="(" separator="," close=")">
+            #{novelId}
+        </foreach>
+    </delete>
+</mapper>

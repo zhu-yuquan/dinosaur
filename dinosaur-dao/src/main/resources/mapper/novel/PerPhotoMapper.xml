@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.PerPhotoMapper">
+    
+    <resultMap type="PerPhoto" id="PerPhotoResult">
+        <result property="photoId"    column="photo_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="photoName"    column="photo_name"    />
+        <result property="remark"    column="remark"    />
+        <result property="visibleType"    column="visible_type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPerPhotoVo">
+        select photo_id, parent_id, user_id, photo_name, remark, visible_type, del_flag, create_by, create_time, update_by, update_time from per_photo
+    </sql>
+
+    <select id="selectPerPhotoList" parameterType="PerPhoto" resultMap="PerPhotoResult">
+        <include refid="selectPerPhotoVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="photoName != null  and photoName != ''"> and photo_name like concat('%', #{photoName}, '%')</if>
+            <if test="visibleType != null "> and visible_type = #{visibleType}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerPhotoById" parameterType="Long" resultMap="PerPhotoResult">
+        <include refid="selectPerPhotoVo"/>
+        where photo_id = #{photoId}
+    </select>
+        
+    <insert id="insertPerPhoto" parameterType="PerPhoto" useGeneratedKeys="true" keyProperty="photoId">
+        insert into per_photo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="photoName != null and photoName != ''">photo_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="visibleType != null">visible_type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="photoName != null and photoName != ''">#{photoName},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="visibleType != null">#{visibleType},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerPhoto" parameterType="PerPhoto">
+        update per_photo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="photoName != null and photoName != ''">photo_name = #{photoName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="visibleType != null">visible_type = #{visibleType},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where photo_id = #{photoId}
+    </update>
+
+    <delete id="deletePerPhotoById" parameterType="Long">
+        delete from per_photo where photo_id = #{photoId}
+    </delete>
+
+    <delete id="deletePerPhotoByIds" parameterType="String">
+        delete from per_photo where photo_id in 
+        <foreach item="photoId" collection="array" open="(" separator="," close=")">
+            #{photoId}
+        </foreach>
+    </delete>
+</mapper>

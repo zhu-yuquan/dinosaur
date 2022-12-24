@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.CmsUploadMapper">
+    
+    <resultMap type="CmsUpload" id="CmsUploadResult">
+        <result property="uploadId"    column="upload_id"    />
+        <result property="absolutePath"    column="absolute_path"    />
+        <result property="bizType"    column="biz_type"    />
+        <result property="oldFileName"    column="old_file_name"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="newFileName"    column="new_file_name"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="ownerType"    column="owner_type"    />
+        <result property="size"    column="size"    />
+        <result property="seq"    column="seq"    />
+        <result property="type"    column="type"    />
+        <result property="uploadTime"    column="upload_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCmsUploadVo">
+        select upload_id, absolute_path, biz_type, old_file_name, latitude, longitude, new_file_name, owner_id, owner_type, size, seq, type, upload_time, del_flag, create_by, create_time, update_by, update_time from cms_upload
+    </sql>
+
+    <select id="selectCmsUploadList" parameterType="CmsUpload" resultMap="CmsUploadResult">
+        <include refid="selectCmsUploadVo"/>
+        <where>  
+            <if test="absolutePath != null  and absolutePath != ''"> and absolute_path = #{absolutePath}</if>
+            <if test="bizType != null  and bizType != ''"> and biz_type = #{bizType}</if>
+            <if test="oldFileName != null  and oldFileName != ''"> and old_file_name like concat('%', #{oldFileName}, '%')</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="newFileName != null  and newFileName != ''"> and new_file_name like concat('%', #{newFileName}, '%')</if>
+            <if test="ownerId != null "> and owner_id = #{ownerId}</if>
+            <if test="ownerType != null  and ownerType != ''"> and owner_type = #{ownerType}</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="seq != null "> and seq = #{seq}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="uploadTime != null "> and upload_time = #{uploadTime}</if>
+        </where>
+        ORDER BY seq, create_time asc
+    </select>
+    
+    <select id="selectCmsUploadById" parameterType="Long" resultMap="CmsUploadResult">
+        <include refid="selectCmsUploadVo"/>
+        where upload_id = #{uploadId}
+    </select>
+        
+    <insert id="insertCmsUpload" parameterType="CmsUpload" useGeneratedKeys="true" keyProperty="uploadId">
+        insert into cms_upload
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="absolutePath != null and absolutePath != ''">absolute_path,</if>
+            <if test="bizType != null">biz_type,</if>
+            <if test="oldFileName != null and oldFileName != ''">old_file_name,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="newFileName != null and newFileName != ''">new_file_name,</if>
+            <if test="ownerId != null">owner_id,</if>
+            <if test="ownerType != null and ownerType != ''">owner_type,</if>
+            <if test="size != null">size,</if>
+            <if test="seq != null">seq,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="uploadTime != null">upload_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="absolutePath != null and absolutePath != ''">#{absolutePath},</if>
+            <if test="bizType != null">#{bizType},</if>
+            <if test="oldFileName != null and oldFileName != ''">#{oldFileName},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="newFileName != null and newFileName != ''">#{newFileName},</if>
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="ownerType != null and ownerType != ''">#{ownerType},</if>
+            <if test="size != null">#{size},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="uploadTime != null">#{uploadTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCmsUpload" parameterType="CmsUpload">
+        update cms_upload
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="absolutePath != null and absolutePath != ''">absolute_path = #{absolutePath},</if>
+            <if test="bizType != null">biz_type = #{bizType},</if>
+            <if test="oldFileName != null and oldFileName != ''">old_file_name = #{oldFileName},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="newFileName != null and newFileName != ''">new_file_name = #{newFileName},</if>
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="ownerType != null and ownerType != ''">owner_type = #{ownerType},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="uploadTime != null">upload_time = #{uploadTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where upload_id = #{uploadId}
+    </update>
+
+    <delete id="deleteCmsUploadById" parameterType="Long">
+        delete from cms_upload where upload_id = #{uploadId}
+    </delete>
+
+    <delete id="deleteCmsUploadByIds" parameterType="String">
+        delete from cms_upload where upload_id in 
+        <foreach item="uploadId" collection="array" open="(" separator="," close=")">
+            #{uploadId}
+        </foreach>
+    </delete>
+</mapper>

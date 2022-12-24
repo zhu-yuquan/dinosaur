@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.PerCatalogueMapper">
+
+    <resultMap type="PerCatalogue" id="PerCatalogueResult">
+        <result property="catalogueId"    column="catalogue_id"    />
+        <result property="novelId"    column="novel_id"    />
+        <result property="catalogueName"    column="catalogue_name"    />
+        <result property="catalogueCode"    column="catalogue_code"    />
+        <result property="catalogueUrl"    column="catalogue_url"    />
+        <result property="catalogueText"    column="catalogue_text"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPerCatalogueVo">
+        select catalogue_id,
+               novel_id,
+               catalogue_name,
+               catalogue_code,
+               catalogue_url,
+               catalogue_text,
+               del_flag,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from per_catalogue
+    </sql>
+
+    <select id="selectPerCatalogueList" parameterType="PerCatalogue" resultMap="PerCatalogueResult">
+        <include refid="selectPerCatalogueVo"/>
+        <where>
+            <if test="novelId != null "> and novel_id = #{novelId}</if>
+            <if test="catalogueName != null  and catalogueName != ''"> and catalogue_name like concat('%', #{catalogueName}, '%')</if>
+            <if test="catalogueCode != null "> and catalogue_code = #{catalogueCode}</if>
+        </where>
+        ORDER BY create_time,catalogue_name asc
+    </select>
+
+    <select id="selectPerCatalogueById" parameterType="String" resultMap="PerCatalogueResult">
+        <include refid="selectPerCatalogueVo"/>
+        where catalogue_id = #{catalogueId}
+    </select>
+
+    <insert id="insertPerCatalogue" parameterType="PerCatalogue" useGeneratedKeys="true" keyProperty="catalogueId">
+        <selectKey keyProperty="catalogueId" resultType="java.lang.String" order="BEFORE">
+            select replace(uuid(), '-', '') fROM dual
+        </selectKey>
+        insert into per_catalogue
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="catalogueId != null">catalogue_id,</if>
+            <if test="novelId != null">novel_id,</if>
+            <if test="catalogueName != null">catalogue_name,</if>
+            <if test="catalogueCode != null">catalogue_code,</if>
+            <if test="catalogueUrl != null">catalogue_url,</if>
+            <if test="catalogueText != null">catalogue_text,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="catalogueId != null">#{catalogueId},</if>
+            <if test="novelId != null">#{novelId},</if>
+            <if test="catalogueName != null">#{catalogueName},</if>
+            <if test="catalogueCode != null">#{catalogueCode},</if>
+            <if test="catalogueUrl != null">#{catalogueUrl},</if>
+            <if test="catalogueText != null">#{catalogueText},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerCatalogue" parameterType="PerCatalogue">
+        update per_catalogue
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="novelId != null">novel_id = #{novelId},</if>
+            <if test="catalogueName != null">catalogue_name = #{catalogueName},</if>
+            <if test="catalogueCode != null">catalogue_code = #{catalogueCode},</if>
+            <if test="catalogueUrl != null">catalogue_url = #{catalogueUrl},</if>
+            <if test="catalogueText != null">catalogue_text = #{catalogueText},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where catalogue_id = #{catalogueId}
+    </update>
+
+    <delete id="deletePerCatalogueById" parameterType="Long">
+        delete from per_catalogue where catalogue_id = #{catalogueId}
+    </delete>
+
+    <delete id="deletePerCatalogueByIds" parameterType="String">
+        delete from per_catalogue where catalogue_id in
+        <foreach item="catalogueId" collection="array" open="(" separator="," close=")">
+            #{catalogueId}
+        </foreach>
+    </delete>
+</mapper>

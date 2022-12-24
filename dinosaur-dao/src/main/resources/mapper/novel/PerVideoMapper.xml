@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.PerVideoMapper">
+
+    <resultMap type="PerVideo" id="PerVideoResult">
+        <result property="videoId"    column="video_id"    />
+        <result property="videoName"    column="video_name"    />
+        <result property="videoAuthor"    column="video_author"    />
+        <result property="videoCode"    column="video_code"    />
+        <result property="videoStatus"    column="video_status"    />
+        <result property="videoImage"    column="video_image"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="videoIntro"    column="video_intro"    />
+        <result property="cateStr"    column="cate_str"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPerVideoVo">
+        select video_id, video_name, video_author, video_code, video_status, video_image, video_url, video_intro, cate_str, cate_name, del_flag, create_by, create_time, update_by, update_time from per_video
+    </sql>
+
+    <select id="selectPerVideoList" parameterType="PerVideo" resultMap="PerVideoResult">
+        <include refid="selectPerVideoVo"/>
+        <where>
+            <if test="videoName != null  and videoName != ''"> and video_name like concat('%', #{videoName}, '%')</if>
+            <if test="videoAuthor != null  and videoAuthor != ''"> and video_author = #{videoAuthor}</if>
+            <if test="videoCode != null  and videoCode != ''"> and video_code = #{videoCode}</if>
+            <if test="videoStatus != null  and videoStatus != ''"> and video_status = #{videoStatus}</if>
+            <if test="videoImage != null  and videoImage != ''"> and video_image = #{videoImage}</if>
+            <if test="videoUrl != null  and videoUrl != ''"> and video_url = #{videoUrl}</if>
+            <if test="videoIntro != null  and videoIntro != ''"> and video_intro = #{videoIntro}</if>
+            <if test="cateStr != null  and cateStr != ''"> and cate_str = #{cateStr}</if>
+            <if test="cateName != null  and cateName != ''"> and cate_name like concat('%', #{cateName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectPerVideoByVideoId" parameterType="Long" resultMap="PerVideoResult">
+        <include refid="selectPerVideoVo"/>
+        where video_id = #{videoId}
+    </select>
+
+    <insert id="insertPerVideo" parameterType="PerVideo" useGeneratedKeys="true" keyProperty="videoId">
+        insert into per_video
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="videoName != null">video_name,</if>
+            <if test="videoAuthor != null">video_author,</if>
+            <if test="videoCode != null">video_code,</if>
+            <if test="videoStatus != null">video_status,</if>
+            <if test="videoImage != null">video_image,</if>
+            <if test="videoUrl != null">video_url,</if>
+            <if test="videoIntro != null">video_intro,</if>
+            <if test="cateStr != null">cate_str,</if>
+            <if test="cateName != null">cate_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="videoName != null">#{videoName},</if>
+            <if test="videoAuthor != null">#{videoAuthor},</if>
+            <if test="videoCode != null">#{videoCode},</if>
+            <if test="videoStatus != null">#{videoStatus},</if>
+            <if test="videoImage != null">#{videoImage},</if>
+            <if test="videoUrl != null">#{videoUrl},</if>
+            <if test="videoIntro != null">#{videoIntro},</if>
+            <if test="cateStr != null">#{cateStr},</if>
+            <if test="cateName != null">#{cateName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePerVideo" parameterType="PerVideo">
+        update per_video
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="videoName != null">video_name = #{videoName},</if>
+            <if test="videoAuthor != null">video_author = #{videoAuthor},</if>
+            <if test="videoCode != null">video_code = #{videoCode},</if>
+            <if test="videoStatus != null">video_status = #{videoStatus},</if>
+            <if test="videoImage != null">video_image = #{videoImage},</if>
+            <if test="videoUrl != null">video_url = #{videoUrl},</if>
+            <if test="videoIntro != null">video_intro = #{videoIntro},</if>
+            <if test="cateStr != null">cate_str = #{cateStr},</if>
+            <if test="cateName != null">cate_name = #{cateName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where video_id = #{videoId}
+    </update>
+
+    <delete id="deletePerVideoByVideoId" parameterType="Long">
+        delete from per_video where video_id = #{videoId}
+    </delete>
+
+    <delete id="deletePerVideoByVideoIds" parameterType="String">
+        delete from per_video where video_id in
+        <foreach item="videoId" collection="array" open="(" separator="," close=")">
+            #{videoId}
+        </foreach>
+    </delete>
+</mapper>

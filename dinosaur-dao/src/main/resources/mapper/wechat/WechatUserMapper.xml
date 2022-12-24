@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuquancoco.novel.mapper.WechatUserMapper">
+
+    <resultMap type="WechatUser" id="WechatUserResult">
+        <result property="wechatId"    column="wechat_id"    />
+        <result property="openid"    column="openid"    />
+        <result property="subscribe"    column="subscribe"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="sex"    column="sex"    />
+        <result property="city"    column="city"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="language"    column="language"    />
+        <result property="headImgUrl"    column="headimgurl"    />
+        <result property="subscribeTime"    column="subscribe_time"    />
+        <result property="unionId"    column="unionid"    />
+        <result property="remark"    column="remark"    />
+        <result property="groupid"    column="groupid"    />
+        <result property="tagidList"    column="tagid_list"    />
+        <result property="subscribeScene"    column="subscribe_scene"    />
+        <result property="qrScene"    column="qr_scene"    />
+        <result property="qrSceneStr"    column="qr_scene_str"    />
+    </resultMap>
+
+    <sql id="selectWechatUserVo">
+        select wechat_id, openid, subscribe, nickname, sex, city, country, province, language, headimgurl, subscribe_time, unionid, remark, groupid, tagid_list, subscribe_scene, qr_scene, qr_scene_str from wechat_user
+    </sql>
+
+    <select id="selectWechatUserList" parameterType="WechatUser" resultMap="WechatUserResult">
+        <include refid="selectWechatUserVo"/>
+        <where>
+            <if test="subscribe != null  and subscribe != ''"> and subscribe = #{subscribe}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+            <if test="headImgUrl != null  and headImgUrl != ''"> and headimgurl = #{headImgUrl}</if>
+            <if test="subscribeTime != null "> and subscribe_time = #{subscribeTime}</if>
+            <if test="unionId != null  and unionId != ''"> and unionid = #{unionId}</if>
+            <if test="groupid != null  and groupid != ''"> and groupid = #{groupid}</if>
+            <if test="tagidList != null  and tagidList != ''"> and tagid_list = #{tagidList}</if>
+            <if test="subscribeScene != null  and subscribeScene != ''"> and subscribe_scene = #{subscribeScene}</if>
+            <if test="qrScene != null  and qrScene != ''"> and qr_scene = #{qrScene}</if>
+            <if test="qrSceneStr != null  and qrSceneStr != ''"> and qr_scene_str = #{qrSceneStr}</if>
+        </where>
+    </select>
+
+    <select id="selectWechatUserById" parameterType="String" resultMap="WechatUserResult">
+        <include refid="selectWechatUserVo"/>
+        where openid = #{openid}
+    </select>
+
+    <insert id="insertWechatUser" parameterType="WechatUser">
+        insert into wechat_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openid != null">openid,</if>
+            <if test="subscribe != null">subscribe,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="sex != null">sex,</if>
+            <if test="city != null">city,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="language != null">language,</if>
+            <if test="headImgUrl != null">headimgurl,</if>
+            <if test="subscribeTime != null">subscribe_time,</if>
+            <if test="unionId != null">unionid,</if>
+            <if test="remark != null">remark,</if>
+            <if test="groupid != null">groupid,</if>
+            <if test="tagidList != null">tagid_list,</if>
+            <if test="subscribeScene != null">subscribe_scene,</if>
+            <if test="qrScene != null">qr_scene,</if>
+            <if test="qrSceneStr != null">qr_scene_str,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openid != null">#{openid},</if>
+            <if test="subscribe != null">#{subscribe},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="city != null">#{city},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="language != null">#{language},</if>
+            <if test="headImgUrl != null">#{headImgUrl},</if>
+            <if test="subscribeTime != null">#{subscribeTime},</if>
+            <if test="unionId != null">#{unionId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="groupid != null">#{groupid},</if>
+            <if test="tagidList != null">#{tagidList},</if>
+            <if test="subscribeScene != null">#{subscribeScene},</if>
+            <if test="qrScene != null">#{qrScene},</if>
+            <if test="qrSceneStr != null">#{qrSceneStr},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWechatUser" parameterType="WechatUser">
+        update wechat_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subscribe != null">subscribe = #{subscribe},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="language != null">language = #{language},</if>
+            <if test="headImgUrl != null">headimgurl = #{headImgUrl},</if>
+            <if test="subscribeTime != null">subscribe_time = #{subscribeTime},</if>
+            <if test="unionId != null">unionid = #{unionId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="groupid != null">groupid = #{groupid},</if>
+            <if test="tagidList != null">tagid_list = #{tagidList},</if>
+            <if test="subscribeScene != null">subscribe_scene = #{subscribeScene},</if>
+            <if test="qrScene != null">qr_scene = #{qrScene},</if>
+            <if test="qrSceneStr != null">qr_scene_str = #{qrSceneStr},</if>
+        </trim>
+        where openid = #{openid}
+    </update>
+
+    <delete id="deleteWechatUserById" parameterType="String">
+        delete from wechat_user where openid = #{openid}
+    </delete>
+
+    <delete id="deleteWechatUserByIds" parameterType="String">
+        delete from wechat_user where openid in
+        <foreach item="openid" collection="array" open="(" separator="," close=")">
+            #{openid}
+        </foreach>
+    </delete>
+</mapper>
