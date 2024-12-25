@@ -46,7 +46,7 @@
           volume: 0.7, // 初始化音量
           playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 3], //可选的播放速度，可自定义
           logo:
-            "https://qczh-1252727916.cos.ap-nanjing.myqcloud.com/pic/273658f508d04d488414fd2b84c9f923.png", // 在视频左角上打一个logo
+            "", // 在视频左角上打一个logo
           video: {
             url: "", // 播放视频的路径
             quality: [
