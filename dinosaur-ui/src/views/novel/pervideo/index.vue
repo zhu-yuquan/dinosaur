@@ -93,7 +93,7 @@
       <el-table-column label="视频code" align="center" prop="videoCode" />
       <!--<el-table-column label="视频状态" align="center" prop="videoStatus" />-->
       <!--<el-table-column label="视频封面图片" align="center" prop="videoImage" />-->
-      <el-table-column label="视频链接地址" align="center" prop="videoUrl" show-overflow-tooltip/>
+<!--      <el-table-column label="视频链接地址" align="center" prop="videoUrl" show-overflow-tooltip/>-->
       <el-table-column label="视频简介" align="center" prop="videoIntro" show-overflow-tooltip/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -121,7 +121,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
